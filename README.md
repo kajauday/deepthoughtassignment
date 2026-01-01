@@ -115,6 +115,130 @@ This step defines clear rules for when inventory or billing issues should be esc
 
 
 
+# Task 2: Patient Care & Communication System
+
+
+## STEP 1 — Message Type Classification
+
+Patient messages are classified into simple, non-overlapping types so clinic staff can decide handling immediately and direct it to doctor only when its needed .
+
+| Message Type | What it Covers | Doctor Input Needed? |
+|-------------|---------------|----------------------|
+| Appointment & Follow-up | Visit reminders, rescheduling, missed appointments | No |
+| Medicine Usage Info | How/when to take medicines already prescribed | No |
+| Recovery Doubts| What is normal after treatment or procedure | No |
+| New Symptom Query | Any new, worsening, or unclear symptom | Yes |
+| Medication Change Request | Requests to start/stop/change dosage | Yes |
+
+**Action Rules:**
+- “No” are handled by staff.
+- “Yes” types are escalated to doctor review.
+
+## STEP 2 — Care Control Sheet (Daily Working Sheet)
+
+All patient communication for the day is tracked in one Google Sheet to ensure nothing is missed and doctor involvement is controlled.
+
+**Sheet Name:** Care_Control - UPLOADED THE GOOGLE SHEET 
+
+| Patient Name | Phone | Visit Type | Message Type | Message Content | Doctor Approval | Status |
+|-------------|-------|------------|--------------|-----------------|-----------------|--------|
+| Ramesh K | +91 9876543210 | OPD | Post-Procedure | Blank | Required | Pending |
+| Sita N | +91 847368901 | OPD | Custom | Auto-filled | Not Required | Waiting |
+| Uday K | +91 7582015678 | Procedure | Follow-up | Auto-filled | Not Required | Pending |
+| Rajagopal L | +91 748295732 | OPD | Follow-up | Blank | Required | Waiting |
+| Sripathi M | +91 4648592732 | Procedure | Custom | Blank | Required | Waiting |
+
+
+
+**Rules:**
+- One row = one patient message
+- Message Content is auto-filled only for “No Doctor Input” types
+- Doctor Approval is marked **Required** only for the last two message types from Step 1
+- Status controls workflow: Pending → Waiting → Sent → Closed
+
+## STEP 3 — Daily Follow-up & Message Queue (Google Sheets)
+
+This step ensures that patient messages are sent on time and that doctor attention is only required for pending decision-critical cases.
+
+**Sheet Used:** Care_Control
+
+| Patient Name | Phone | Visit Type | Message Type | Message Content | Doctor Approval | Status |
+|-------------|-------|------------|--------------|-----------------|-----------------|--------|
+| Ramesh K | +91 9876543210 | OPD | Post-Procedure | Blank | Required | Pending |
+| Sita N | +91 847368901 | OPD | Custom | Auto-filled | Not Required | Waiting |
+| Uday K | +91 7582015678 | Procedure | Follow-up | Auto-filled | Not Required | Pending |
+| Rajagopal L | +91 748295732 | OPD | Follow-up | Blank | Required | Waiting |
+| Sripathi M | +91 4648592732 | Procedure | Custom | Blank | Required | Waiting |
+
+
+**Daily Process:**
+- Clinic staff filters the Auto-Send Queue and sends template messages
+- After sending, Status is updated to “Sent”
+- Doctor reviews only the Doctor Review Queue and provides short instructions
+- Staff updates Message Content and sets Status to “Sent”
+
+**Action Rules:**
+- No row should remain in “Pending” status at end of day
+- Doctor reviews only filtered rows marked “Doctor Input Required = Yes”
+- Unsent messages are carried forward and reviewed first the next day
+
+
+## STEP 4 — Patient Question Handling
+
+| Patient | Phone | Question | Answer | Status |
+|--------|-------|----------|--------|--------|
+| Ramesh K | 91 9876503210 | Is Headache a common side effect? | NO | Done |
+| Uday K | 91 7702594925 | I need a change in dosage |  | Pending |
+
+
+**Action:**
+- If Status = Done → Send response to patient and close the entry
+- If Status = Pending → Move to doctor review queue in next review window
+- No question remains unanswered at day end
+- unresolved items are carried forward and donefirst next day
+
+
+## STEP 5 — Message Dispatch Rules
+
+Messages are sent only when all required conditions are met to avoid partial or incorrect communication.
+
+**Dispatch Conditions:**
+- Message Content is filled
+- Doctor Approval = Not Required OR Approved
+- Status = Pending or Waiting
+
+**After Sending:**
+- Update Status to Sent
+- Do not resend the same message on the same day
+
+
+
+## STEP 6 — End-of-Day Closing Check
+
+A short daily check ensures no patient communication is missed.
+
+**Before clinic closes:**
+- Filter rows where Status ≠ Sent and Status ≠ Closed
+- Resolve simple issues immediately
+- Carry forward unresolved doctor-dependent cases to next day
+
+**Rule:**
+- No sheet is closed with unanswered patient queries
+
+
+## STEP 7 — Optional Automation & Integration
+
+-Once the manual workflow is stable, this system can be automated using Google Apps Script by scanning the Care_Control and Patient_Questions sheets for rows marked as Pending. For messages that do not require doctor approval, the script can automatically send the prepared message via a WhatsApp API and immediately update the status to Sent. For doctor-dependent cases, automation is triggered only after the approval field is marked Approved, ensuring no medical judgment is bypassed. This automation reduces repetitive staff work, maintains the same control logic as the manual process, and ensures that failures or exceptions remain visible in the sheet instead of silently failing.
+  
+
+
+
+
+
+
+
+
+
 
 
 
