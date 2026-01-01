@@ -96,6 +96,24 @@ This step defines clear rules for when inventory or billing issues should be esc
 - Focus on solution of the issue and not where the issue came from or who is to blame.
 
 
+## Daily Checklist
+
+- Review sales entries for high-risk medicines only
+- Check for new or unusual medicine name variations and map them to master names
+- Perform usage reasonableness check by comparing expected vs actual closing stock
+- Randomly check 3–5 bills involving high-risk medicines for correct name and quantity
+- Correct any obvious errors found and log them for weekly review
+
+
+## Weekly Checklist
+
+- Review error logs from daily checks
+- Identify repeated errors or patterns by medicine or error type
+- Retrain billing staff if the same mistake repeats multiple times
+- Update standard billing instructions if required
+- Escalate to doctor only if issues affect treatment availability or have material financial impact
+
+
 
 
 
